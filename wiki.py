@@ -7,7 +7,7 @@ S = "https://web.archive.org"
 
 DEBUG = 1
 
-blacklist = ["http://www.pardus.org.tr/indir/"]
+blacklist = ["http://www.pardus.org.tr/indir/", "http://tr.pardus-wiki.org/Pardus_duraklar%C4%B1"]
 visitedLinks = ["deneme"]
 visitedTitles = []
 
@@ -76,6 +76,8 @@ def getWikiText(s,t):
 
   debug("getWikiText",url)
   page = getUrl(url)
+  if page == None:
+    return 0
   writeFile("%s.html" % fname, page)
   wiki = []
   found = False 
@@ -100,7 +102,7 @@ def links(content):
       return t
 
     if (l.find("Dosya:") == -1) and (l.find("a href") > -1) and (l.find("pardus-wiki.org") > -1):
-      link = l.split('a href="')[1].split('"')[0]
+      link = l.split('a href="')[1].split('"')[0].split("#")[0]
       temp = "%s%s" % (S,link)
       if checkBlacklist(temp) == False:
         if temp not in t:
@@ -111,6 +113,8 @@ def getTextArea(link):
   s, t = extractLink(link)
   if t not in visitedTitles:
     content = getUrl(link)
+    if content == None:
+      return 0
     for l in content:
       if l.find("action=edit") > -1:
         sourcePage, title = extractLink(l)
