@@ -7,8 +7,16 @@ S = "https://web.archive.org"
 
 DEBUG = 1
 
+blacklist = ["http://www.pardus.org.tr/indir/"]
 visitedLinks = ["deneme"]
 visitedTitles = []
+
+
+def checkBlacklist(link):
+  for blacklisted in blacklist:
+    if link.find(blacklisted) > -1:
+      return True
+  return False
 
 def writeFile(fname, output):
   listType = isinstance(output, list)
@@ -94,13 +102,13 @@ def links(content):
     if (l.find("Dosya:") == -1) and (l.find("a href") > -1) and (l.find("pardus-wiki.org") > -1):
       link = l.split('a href="')[1].split('"')[0]
       temp = "%s%s" % (S,link)
-      if temp not in t:
-        t.append(temp)
+      if checkBlacklist(temp) == False:
+        if temp not in t:
+          t.append(temp)
   return t
 
 def getTextArea(link):
   s, t = extractLink(link)
-  print t, visitedTitles
   if t not in visitedTitles:
     content = getUrl(link)
     for l in content:
@@ -118,7 +126,6 @@ for link in newLinks:
   level2Links = getTextArea(link)
   try:
     for link2 in level2Links:
-      print visitedTitles
       getTextArea(link2)
   except:
     continue
