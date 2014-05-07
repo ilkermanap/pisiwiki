@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os, sys, urllib2 as ur, urllib
 
 #"https://web.archive.org/web/20120726004340/http://tr.pardus-wiki.org/Ana_Sayfa"
