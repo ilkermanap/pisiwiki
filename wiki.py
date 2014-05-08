@@ -127,11 +127,18 @@ def getTextArea(link):
           return pageLinks
       
 #icerik = getUrl(anasayfa)
+os.system("mkdir -p wiki")
 newLinks = getTextArea(anasayfa)
 for link in newLinks:
   level2Links = getTextArea(link)
   try:
     for link2 in level2Links:
-      getTextArea(link2)
+      level3Links = getTextArea(link2)
+      for link3 in level3Links:
+        level4Links = getTextArea(link3)
+        for link4 in level4Links:
+          level5Links = getTextArea(link4)
+          for link5 in level5Links:
+            getTextArea(link5)
   except:
     continue
